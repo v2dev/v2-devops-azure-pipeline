@@ -19,17 +19,17 @@ stages:
         # SecretsFilter: '*'
         RunAsPreJob: false
     - script: |
-        echo "Container1 URL: $(test)"
-        echo "new URL: $(testurl)"
+        echo "Container1 URL: $(Container1Url)"
+        echo "Container2 URL: $(Container2Url)"
       displayName: 'Display fetched URLs'
 
-  # - job: UpdateContainerApps
-  #   displayName: 'Update Azure Container Apps Environment Variables'
-  #   dependsOn: FetchKeyVaultSecrets
-  #   pool:
-  #     vmImage: 'ubuntu-latest'
-  #   steps:
-  #   - script: |
-  #       az webapp config appsettings set --name '<YourContainerApp1Name>' --resource-group '<YourResourceGroup>' --settings 'CONTAINER2_URL=$(Container2Url)'
-  #       az webapp config appsettings set --name '<YourContainerApp2Name>' --resource-group '<YourResourceGroup>' --settings 'CONTAINER1_URL=$(Container1Url)'
-  #     displayName: 'Update Azure Container Apps'
+  - job: UpdateContainerApps
+    displayName: 'Update Azure Container Apps Environment Variables'
+    dependsOn: FetchKeyVaultSecrets
+    # pool:
+    #   vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER2_URL=$(Container2Url)'
+        az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER1_URL=$(Container1Url)'
+      displayName: 'Update Azure Container Apps'
