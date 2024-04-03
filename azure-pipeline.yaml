@@ -24,17 +24,31 @@ stages:
     #     cat output.txt
     #   displayName: 'Display fetched URLs'
     
-    - task: AzurePowerShell@5
+    - task: AzureCLI@2
       inputs:
-        azureSubscription: 'v2devop-wif'
-        ScriptType: 'InlineScript'
-        Inline: |
-          $config = Get-AzAppConfigurationKeyValue -ResourceGroupName v2devops-new -Name appconfigcallmind
-          $envVariables = @{}
-          foreach ($entry in $config) {
-            $envVariables[$entry.Key] = $entry.Value
-          }
-          write $envVariables
+        azureSubscription: 'callmind-wif-serviceconnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
+          envVariables=""
+          while IFS= read -r line; do
+              key=$(echo $line | jq -r '.Key')
+              value=$(echo $line | jq -r '.Value')
+              envVariables+=" --set $key=$value"
+          done <<< "$config"
+          echo "Environment variables are--------" $envVariables
+          
+# az container update --name <containerAppName> --resource-group <resourceGroupName> $envVariables
+
+
+# Inline: |
+#   $config = Get-AzAppConfigurationKeyValue -ResourceGroupName v2devops-new -Name appconfigcallmind
+#   $envVariables = @{}
+#   foreach ($entry in $config) {
+#     $envVariables[$entry.Key] = $entry.Value
+#   }
+#   write $envVariables
 
   # az container update --name callmindtestcontainer --resource-group v2devops-new --set environmentVariables=$envVariables
 
