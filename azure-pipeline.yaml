@@ -16,7 +16,7 @@ stages:
       inputs:
         azureSubscription: 'v2devop-wif'
         KeyVaultName: 'v2devops-new-test'
-        SecretsFilter: '*'
+        # SecretsFilter: '*'
         RunAsPreJob: false
     - script: |
         echo "Container1 URL: $(test)"
