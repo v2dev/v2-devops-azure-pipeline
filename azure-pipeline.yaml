@@ -20,6 +20,7 @@ stages:
         RunAsPreJob: false
     - script: |
         echo "Container1 URL: $(test)"
+        echo "new URL: $(testurl)"
       displayName: 'Display fetched URLs'
 
   # - job: UpdateContainerApps
