@@ -14,7 +14,7 @@ stages:
     steps:
     - task: AzureKeyVault@2
       inputs:
-        azureSubscriptionEndpoint: 'v2devop-wif'
+        azureSubscription: 'v2devop-wif'
         KeyVaultName: 'v2devops-new-test'
         SecretsFilter: '*'
         RunAsPreJob: false
