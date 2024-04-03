@@ -21,6 +21,7 @@ stages:
     - script: |
         echo "Container1 URL: $(Container1Url)" >> output.txt
         echo "Container2 URL: $(Container2Url)" >> output.txt
+        cat output.txt
       displayName: 'Display fetched URLs'
 
   - job: UpdateContainerApps
@@ -39,7 +40,7 @@ stages:
   #   - task: AzureContainerApps@1
   #     inputs:
   #       # appSourcePath: '$(Build.SourcesDirectory)'
-  #       azureSubscription: 'azuredevopsp'
+  #       azureSubscription: 'v2devop-wif'
   #       # acrName: 'callminduatconregistry'
   #       # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
   #       imageToBuild : callminduatconregistry.azurecr.io/callmindvoice:$(Build.BuildId)
