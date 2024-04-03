@@ -30,6 +30,9 @@ stages:
     #   vmImage: 'ubuntu-latest'
     steps:
     - script: |
-        az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER2_URL=$(Container2Url)'
-        az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER1_URL=$(Container1Url)'
+        az containerapp update -n callmindtestcontainer -g v2devops-new -v CONTAINER2_URL=$(Container2Url)
       displayName: 'Update Azure Container Apps'
+
+
+      # az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER2_URL=$(Container2Url)'
+      #   az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER1_URL=$(Container1Url)'
