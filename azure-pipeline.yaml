@@ -1,0 +1,71 @@
+trigger:
+  - main
+  - azure-pipelines
+ 
+pool:
+  vmImage: 'ubuntu-latest'
+  #name: callmindagent
+
+stages:
+- stage: deploy-dev
+  displayName: 'Deploy to Dev'
+  jobs:
+  - job: deploy_dev
+    displayName: 'Deploy to Dev'
+    steps:
+    - template: terraform-setup.yml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: statefile-storage.yml
+      parameters:
+        resourceGroupName: 'rg-terragrunt-backend-state-dev'
+        location: 'eastus'
+        storageAccountName: 'callmindterraformstate-dev'
+        containerName: 'dev'
+
+    - template: terragrunt-apply.yml
+      parameters:
+        environment: 'dev'
+
+- stage: deploy-qa
+  displayName: 'Deploy to QA'
+  jobs:
+  - job: deploy_qa
+    displayName: 'Deploy to QA'
+    steps:
+    - template: terraform-setup.yml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: statefile-storage.yml
+      parameters:
+        resourceGroupName: 'rg-terragrunt-backend-state-qa'
+        location: 'eastus'
+        storageAccountName: 'callmindterraformstate-qa'
+        containerName: 'qa'
+
+    - template: terragrunt-apply.yml
+      parameters:
+        environment: 'qa'
+
+- stage: deploy-staging
+  displayName: 'Deploy to Staging'
+  jobs:
+  - job: deploy_staging
+    displayName: 'Deploy to Staging'
+    steps:
+    - template: terraform-setup.yml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: statefile-storage.yml
+      parameters:
+        resourceGroupName: 'rg-terragrunt-backend-state-staging'
+        location: 'eastus'
+        storageAccountName: 'callmindterraformstate-staging'
+        containerName: 'staging'
+
+    - template: terragrunt-apply.yml
+      parameters:
+        environment: 'staging'
