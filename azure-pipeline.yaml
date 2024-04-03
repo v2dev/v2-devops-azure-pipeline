@@ -31,14 +31,26 @@ stages:
         scriptLocation: 'inlineScript'
         # config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}")
         inlineScript: |
-          config=$(az appconfig kv list -n appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
-          envVariables=""
-          while IFS= read -r line; do
-              key=$(echo $line | jq -r '.Key')
-              value=$(echo $line | jq -r '.Value')
-              envVariables+=" --set $key=$value"
-          done <<< "$config"
-          echo "Environment variables are--------" $envVariables
+          json_data=$(az appconfig kv list -n appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
+          echo $json_data
+          for item in $(echo "${json_data}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${item} | base64 --decode | jq -r ${1}
+            }
+
+            key=$(_jq '.Key')
+            value=$(_jq '.Value')
+
+            echo "Key: $key, Value: $value"
+          done
+# config=$(az appconfig kv list -n appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
+# envVariables=""
+# while IFS= read -r line; do
+#     key=$(echo $line | jq -r '.Key')
+#     value=$(echo $line | jq -r '.Value')
+#     envVariables+=" --set $key=$value"
+# done <<< "$config"
+# echo "Environment variables are--------" $envVariables
 
 # az container update --name <containerAppName> --resource-group <resourceGroupName> $envVariables
 
