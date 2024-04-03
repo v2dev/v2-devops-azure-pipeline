@@ -29,8 +29,9 @@ stages:
         azureSubscription: 'v2devop-wif'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
+        # config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}")
         inlineScript: |
-          config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}")
+          config=$(az appconfig kv list -n appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
           envVariables=""
           while IFS= read -r line; do
               key=$(echo $line | jq -r '.Key')
