@@ -30,7 +30,7 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
+          config=$(az appconfig kv list --resource-group v2devops-new --name appconfigcallmind --query "[].{Key:key, Value:value}")
           envVariables=""
           while IFS= read -r line; do
               key=$(echo $line | jq -r '.Key')
