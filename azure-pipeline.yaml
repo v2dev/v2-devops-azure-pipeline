@@ -3,7 +3,7 @@ trigger:
  
 pool:
   # vmImage: 'ubuntu-latest'*
-  name: self-hosted-agent-test
+  name: self-hosted-agent-pool
 
 stages:
 - stage: FetchKeyVaultSecrets
