@@ -1,71 +1,34 @@
 trigger:
   - main
-  - azure-pipelines
  
 pool:
   vmImage: 'ubuntu-latest'
   #name: callmindagent
 
 stages:
-- stage: deploy-dev
-  displayName: 'Deploy to Dev'
+- stage: FetchKeyVaultSecrets
+  displayName: 'Fetch Secrets from the vault'
   jobs:
-  - job: deploy_dev
-    displayName: 'Deploy to Dev'
+  - job: FetchKeyVaultSecrets
+    displayName: 'Fetch URLs from Azure Key Vault'
     steps:
-    - template: terraform-setup.yml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: statefile-storage.yml
-      parameters:
-        resourceGroupName: 'rg-terragrunt-backend-state-dev'
-        location: 'eastus'
-        storageAccountName: 'callmindterraformstate-dev'
-        containerName: 'dev'
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscriptionEndpoint: 'v2devop-wif'
+        KeyVaultName: 'v2devops-new-test'
+        SecretsFilter: '*'
+        RunAsPreJob: false
+    - script: |
+        echo "Container1 URL: $(test)"
+      displayName: 'Display fetched URLs'
 
-    - template: terragrunt-apply.yml
-      parameters:
-        environment: 'dev'
-
-- stage: deploy-qa
-  displayName: 'Deploy to QA'
-  jobs:
-  - job: deploy_qa
-    displayName: 'Deploy to QA'
-    steps:
-    - template: terraform-setup.yml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: statefile-storage.yml
-      parameters:
-        resourceGroupName: 'rg-terragrunt-backend-state-qa'
-        location: 'eastus'
-        storageAccountName: 'callmindterraformstate-qa'
-        containerName: 'qa'
-
-    - template: terragrunt-apply.yml
-      parameters:
-        environment: 'qa'
-
-- stage: deploy-staging
-  displayName: 'Deploy to Staging'
-  jobs:
-  - job: deploy_staging
-    displayName: 'Deploy to Staging'
-    steps:
-    - template: terraform-setup.yml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: statefile-storage.yml
-      parameters:
-        resourceGroupName: 'rg-terragrunt-backend-state-staging'
-        location: 'eastus'
-        storageAccountName: 'callmindterraformstate-staging'
-        containerName: 'staging'
-
-    - template: terragrunt-apply.yml
-      parameters:
-        environment: 'staging'
+  # - job: UpdateContainerApps
+  #   displayName: 'Update Azure Container Apps Environment Variables'
+  #   dependsOn: FetchKeyVaultSecrets
+  #   pool:
+  #     vmImage: 'ubuntu-latest'
+  #   steps:
+  #   - script: |
+  #       az webapp config appsettings set --name '<YourContainerApp1Name>' --resource-group '<YourResourceGroup>' --settings 'CONTAINER2_URL=$(Container2Url)'
+  #       az webapp config appsettings set --name '<YourContainerApp2Name>' --resource-group '<YourResourceGroup>' --settings 'CONTAINER1_URL=$(Container1Url)'
+  #     displayName: 'Update Azure Container Apps'
