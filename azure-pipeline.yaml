@@ -19,8 +19,8 @@ stages:
         # SecretsFilter: '*'
         RunAsPreJob: false
     - script: |
-        echo "Container1 URL: $(Container1Url)"
-        echo "Container2 URL: $(Container2Url)"
+        echo "Container1 URL: $(Container1Url)" >> output.txt
+        echo "Container2 URL: $(Container2Url)" >> output.txt
       displayName: 'Display fetched URLs'
 
   - job: UpdateContainerApps
@@ -33,6 +33,22 @@ stages:
         az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars CONTAINER2_URL=$(Container2Url)
       displayName: 'Update Azure Container Apps'
 
-
-      # az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER2_URL=$(Container2Url)'
-      #   az webapp config appsettings set --name 'callmindtestcontainer' --resource-group 'v2devops-new' --settings 'CONTAINER1_URL=$(Container1Url)'
+  # - job: Push
+  #   displayName: 'Build, Push & Deploy'
+  #   steps:
+  #   - task: AzureContainerApps@1
+  #     inputs:
+  #       # appSourcePath: '$(Build.SourcesDirectory)'
+  #       azureSubscription: 'azuredevopsp'
+  #       # acrName: 'callminduatconregistry'
+  #       # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
+  #       imageToBuild : callminduatconregistry.azurecr.io/callmindvoice:$(Build.BuildId)
+  #       containerAppName: 'callmindvoice'
+  #       resourceGroup: 'callmindrguat'
+  #       # environmentVariables: |
+  #       #   AZURE_REGION=$(AZURE_REGION_DEV)
+  #       #   AZURE_SPEECH_KEY=$(AZURE_SPEECH_KEY_DEV)
+  #       #   APP_SVC_CONNECTION=$(APP_SVC_CONNECTION_DEV)
+  #       #   AI_SVC_CONNECTION=$(AI_SVC_CONNECTION_DEV)
+  #       #   SPEECH_SVC_CONNECTION=$(SPEECH_SVC_CONNECTION_DEV)
+  #       #   LANG_PRECISON_NUM=$(LANG_PRECISON_NUM_DEV)    
