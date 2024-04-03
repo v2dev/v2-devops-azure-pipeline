@@ -24,32 +24,29 @@ stages:
         cat output.txt
       displayName: 'Display fetched URLs'
 
-  - job: UpdateContainerApps
-    displayName: 'Update Azure Container Apps Environment Variables'
-    dependsOn: FetchKeyVaultSecrets
-    # pool:
-    #   vmImage: 'ubuntu-latest'
-    steps:
-    - script: |
-        az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars CONTAINER2_URL=$(Container2Url)
-      displayName: 'Update Azure Container Apps'
-
-  # - job: Push
-  #   displayName: 'Build, Push & Deploy'
+  # - job: UpdateContainerApps
+  #   displayName: 'Update Azure Container Apps Environment Variables'
+  #   dependsOn: FetchKeyVaultSecrets
+  #   # pool:
+  #   #   vmImage: 'ubuntu-latest'
   #   steps:
-  #   - task: AzureContainerApps@1
-  #     inputs:
-  #       # appSourcePath: '$(Build.SourcesDirectory)'
-  #       azureSubscription: 'v2devop-wif'
-  #       # acrName: 'callminduatconregistry'
-  #       # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
-  #       imageToBuild : callminduatconregistry.azurecr.io/callmindvoice:$(Build.BuildId)
-  #       containerAppName: 'callmindvoice'
-  #       resourceGroup: 'callmindrguat'
-  #       # environmentVariables: |
-  #       #   AZURE_REGION=$(AZURE_REGION_DEV)
-  #       #   AZURE_SPEECH_KEY=$(AZURE_SPEECH_KEY_DEV)
-  #       #   APP_SVC_CONNECTION=$(APP_SVC_CONNECTION_DEV)
-  #       #   AI_SVC_CONNECTION=$(AI_SVC_CONNECTION_DEV)
-  #       #   SPEECH_SVC_CONNECTION=$(SPEECH_SVC_CONNECTION_DEV)
-  #       #   LANG_PRECISON_NUM=$(LANG_PRECISON_NUM_DEV)    
+  #   - script: |
+  #       az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars CONTAINER2_URL=$(Container2Url)
+  #     displayName: 'Update Azure Container Apps'
+
+  - job: Push
+    displayName: 'Build, Push & Deploy'
+    steps:
+    - task: AzureContainerApps@1
+      inputs:
+        # appSourcePath: '$(Build.SourcesDirectory)'
+        azureSubscription: 'v2devop-wif'
+        # acrName: 'callminduatconregistry'
+        # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
+        imageToBuild : mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
+        containerAppName: 'callmindtestcontainer'
+        resourceGroup: 'v2devops-new'
+        environmentVariables: |
+          CONTAINER2_URL=$(Container2Url)
+          CONTAINER1_URL=$(Container1Url)
+          testurl='testurl.com'
