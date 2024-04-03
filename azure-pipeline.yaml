@@ -12,17 +12,31 @@ stages:
   - job: FetchKeyVaultSecrets
     displayName: 'Fetch URLs from Azure Key Vault'
     steps:
-    - task: AzureKeyVault@2
+    # - task: AzureKeyVault@2
+    #   inputs:
+    #     azureSubscription: 'v2devop-wif'
+    #     KeyVaultName: 'v2devops-new-test'
+    #     # SecretsFilter: '*'
+    #     RunAsPreJob: false
+    # - script: |
+    #     echo "Container1 URL: $(Container1Url)" >> output.txt
+    #     echo "Container2 URL: $(Container2Url)" >> output.txt
+    #     cat output.txt
+    #   displayName: 'Display fetched URLs'
+    
+    - task: AzurePowerShell@5
       inputs:
         azureSubscription: 'v2devop-wif'
-        KeyVaultName: 'v2devops-new-test'
-        # SecretsFilter: '*'
-        RunAsPreJob: false
-    - script: |
-        echo "Container1 URL: $(Container1Url)" >> output.txt
-        echo "Container2 URL: $(Container2Url)" >> output.txt
-        cat output.txt
-      displayName: 'Display fetched URLs'
+        ScriptType: 'InlineScript'
+        Inline: |
+          $config = Get-AzAppConfigurationKeyValue -ResourceGroupName v2devops-new -Name appconfigcallmind
+          $envVariables = @{}
+          foreach ($entry in $config) {
+            $envVariables[$entry.Key] = $entry.Value
+          }
+          write $envVariables
+
+  # az container update --name callmindtestcontainer --resource-group v2devops-new --set environmentVariables=$envVariables
 
   # - job: UpdateContainerApps
   #   displayName: 'Update Azure Container Apps Environment Variables'
@@ -34,19 +48,19 @@ stages:
   #       az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars CONTAINER2_URL=$(Container2Url)
   #     displayName: 'Update Azure Container Apps'
 
-  - job: Push
-    displayName: 'Build, Push & Deploy'
-    steps:
-    - task: AzureContainerApps@1
-      inputs:
-        appSourcePath: '$(Build.SourcesDirectory)'
-        azureSubscription: 'v2devop-wif'
-        acrName: 'callmindtest'
-        # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
-        imageToBuild : mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
-        containerAppName: 'callmindtestcontainer'
-        resourceGroup: 'v2devops-new'
-        environmentVariables: |
-          CONTAINER2_URL=$(Container2Url)
-          CONTAINER1_URL=$(Container1Url)
-          testurl='testurl.com'
+  # - job: Push
+  #   displayName: 'Build, Push & Deploy'
+  #   steps:
+  #   - task: AzureContainerApps@1
+  #     inputs:
+  #       appSourcePath: '$(Build.SourcesDirectory)'
+  #       azureSubscription: 'v2devop-wif'
+  #       acrName: 'callmindtest'
+  #       # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
+  #       imageToBuild : mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
+  #       containerAppName: 'callmindtestcontainer'
+  #       resourceGroup: 'v2devops-new'
+  #       environmentVariables: |
+  #         CONTAINER2_URL=$(Container2Url)
+  #         CONTAINER1_URL=$(Container1Url)
+  #         testurl='testurl.com'
