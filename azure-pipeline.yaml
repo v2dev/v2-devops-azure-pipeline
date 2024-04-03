@@ -30,7 +30,7 @@ stages:
     #   vmImage: 'ubuntu-latest'
     steps:
     - script: |
-        az containerapp update -n callmindtestcontainer -g v2devops-new -v CONTAINER2_URL=$(Container2Url)
+        az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars CONTAINER2_URL=$(Container2Url)
       displayName: 'Update Azure Container Apps'
 
 
