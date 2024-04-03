@@ -2,8 +2,8 @@ trigger:
   - main
  
 pool:
-  vmImage: 'ubuntu-latest'
-  #name: callmindagent
+  # vmImage: 'ubuntu-latest'
+  name: self-hosted-agent-test
 
 stages:
 - stage: FetchKeyVaultSecrets
