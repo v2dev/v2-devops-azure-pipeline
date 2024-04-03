@@ -19,7 +19,7 @@ stages:
     #     # SecretsFilter: '*'
     #     RunAsPreJob: false
     # - script: |
-    #     echo "Container1 URL: $(Container1Url)" >> output.txt
+    #     echo "Container1 URL: $(Container1Url)" >> output.txt&
     #     echo "Container2 URL: $(Container2Url)" >> output.txt
     #     cat output.txt
     #   displayName: 'Display fetched URLs'
