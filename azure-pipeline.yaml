@@ -42,7 +42,11 @@ stages:
             value=$(_jq '.Value')
 
             echo "Key: $key, Value: $value"
+            az containerapp update -n callmindtestcontainer -g v2devops-new --set-env-vars $key=$value
           done
+
+# az container update --name <containerAppName> --resource-group <resourceGroupName> $envVariables
+
 # config=$(az appconfig kv list -n appconfigcallmind --query "[].{Key:key, Value:value}" --output json)
 # envVariables=""
 # while IFS= read -r line; do
