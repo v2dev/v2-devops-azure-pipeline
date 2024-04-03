@@ -41,7 +41,7 @@ stages:
       inputs:
         appSourcePath: '$(Build.SourcesDirectory)'
         azureSubscription: 'v2devop-wif'
-        # acrName: 'callminduatconregistry'
+        acrName: 'callmindtest'
         # imageToDeploy: 'callmindacrdev.azurecr.io/callmindui:$(Build.BuildId)'
         imageToBuild : mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
         containerAppName: 'callmindtestcontainer'
