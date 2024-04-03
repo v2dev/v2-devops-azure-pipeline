@@ -26,7 +26,7 @@ stages:
     
     - task: AzureCLI@2
       inputs:
-        azureSubscription: 'callmind-wif-serviceconnection'
+        azureSubscription: 'v2devop-wif'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
@@ -38,7 +38,7 @@ stages:
               envVariables+=" --set $key=$value"
           done <<< "$config"
           echo "Environment variables are--------" $envVariables
-          
+
 # az container update --name <containerAppName> --resource-group <resourceGroupName> $envVariables
 
 
