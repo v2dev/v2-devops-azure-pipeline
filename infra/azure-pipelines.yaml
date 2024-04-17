@@ -13,18 +13,18 @@ stages:
   - job: deploy_dev
     displayName: 'Deploy to Dev'
     steps:
-    - template: templates\terraform-setup.yml
+    - template: templates\terraform-setup.yaml
       parameters:
         terraformVersion: 'latest'
     
-    - template: templates\statefile-storage.yml
+    - template: templates\statefile-storage.yaml
       parameters:
         resourceGroupName: 'rg-terragrunt-backend-state-dev'
         location: 'eastus'
         storageAccountName: 'callmindterraformstate-dev'
         containerName: 'dev'
 
-    - template: templates\terragrunt-apply.yml
+    - template: templates\terragrunt-apply.yaml
       parameters:
         environment: 'dev'
 
@@ -34,18 +34,18 @@ stages:
 #   - job: deploy_qa
 #     displayName: 'Deploy to QA'
 #     steps:
-#     - template: templates\terraform-setup.yml
+#     - template: templates\terraform-setup.yaml
 #       parameters:
 #         terraformVersion: 'latest'
     
-#     - template: templates\statefile-storage.yml
+#     - template: templates\statefile-storage.yaml
 #       parameters:
 #         resourceGroupName: 'rg-terragrunt-backend-state-qa'
 #         location: 'eastus'
 #         storageAccountName: 'callmindterraformstate-qa'
 #         containerName: 'qa'
 
-#     - template: templates\terragrunt-apply.yml
+#     - template: templates\terragrunt-apply.yaml
 #       parameters:
 #         environment: 'qa'
 
@@ -55,17 +55,17 @@ stages:
 #   - job: deploy_staging
 #     displayName: 'Deploy to Staging'
 #     steps:
-#     - template: templates\terraform-setup.yml
+#     - template: templates\terraform-setup.yaml
 #       parameters:
 #         terraformVersion: 'latest'
     
-#     - template: templates\statefile-storage.yml
+#     - template: templates\statefile-storage.yaml
 #       parameters:
 #         resourceGroupName: 'rg-terragrunt-backend-state-staging'
 #         location: 'eastus'
 #         storageAccountName: 'callmindterraformstate-staging'
 #         containerName: 'staging'
 
-#     - template: templates\terragrunt-apply.yml
+#     - template: templates\terragrunt-apply.yaml
 #       parameters:
 #         environment: 'staging'
