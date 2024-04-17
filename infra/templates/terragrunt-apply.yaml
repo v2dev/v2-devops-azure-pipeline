@@ -5,7 +5,7 @@ steps:
   - task: AzureCLI@2
     displayName: Terragrunt apply
     inputs:
-      azureSubscription: 'v2devop-sc'
+      azureSubscription: 'v2devops-service-connection'
       scriptType: 'bash'
       addSpnToEnvironment: true
       scriptLocation: 'inlineScript'
