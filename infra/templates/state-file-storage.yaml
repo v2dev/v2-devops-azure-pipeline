@@ -1,0 +1,33 @@
+parameters:
+  resourceGroupName: ''
+  location: ''
+  storageAccountName: ''
+  containerName: ''
+
+steps:
+- task: AzureCLI@2
+  displayName: Create resource group
+  inputs:
+    v2devop-wif: 'callmind-wif-serviceconnection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az group create --name ${{ parameters.resourceGroupName }} --location ${{ parameters.location }}
+
+- task: AzureCLI@2
+  displayName: Create storage account
+  inputs:
+    v2devop-wif: 'callmind-wif-serviceconnection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage account create --name ${{ parameters.storageAccountName }} --resource-group ${{ parameters.resourceGroupName }} --location ${{ parameters.location }} --sku Standard_LRS
+
+- task: AzureCLI@2
+  displayName: Create storage container
+  inputs:
+    v2devop-wif: 'callmind-wif-serviceconnection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az storage container create --name ${{ parameters.containerName }} --account-name ${{ parameters.storageAccountName }}
