@@ -1,6 +1,6 @@
 locals {
-  env         = "vtest"
+  env         = "dev"
   location    = "eastus"
-  environment = "vtest"
+  environment = "dev"
   prefix      = "callmind"
 }
