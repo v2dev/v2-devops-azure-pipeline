@@ -7,9 +7,9 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    resource_group_name  = "rg-terragrunt-backend-state"
-    storage_account_name = "callmindterraformstate"
-    container_name       = "devstatefile"
+    resource_group_name  = "v2devops-new"
+    storage_account_name = "containerdev"
+    container_name       = "dev"
     key                  = "${path_relative_to_include()}/terraform.tfstate"
   }
 }
