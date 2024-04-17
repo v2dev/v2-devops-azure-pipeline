@@ -19,7 +19,7 @@ stages:
     
     - template: templates\statefile-storage.yaml
       parameters:
-        resourceGroupName: 'rg-terragrunt-backend-state-dev'
+        resourceGroupName: 'v2devops-new'
         location: 'eastus'
         storageAccountName: 'callmindterraformstate-dev'
         containerName: 'dev'
