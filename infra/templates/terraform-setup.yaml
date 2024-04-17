@@ -13,23 +13,24 @@ parameters:
 #       sudo mv terragrunt /usr/local/bin
 #     displayName: Install Terragrunt
 steps:
-- task: TerraformInstaller@0
-  displayName: Install Terraform
-  inputs:
-    terraformVersion: ${{ parameters.terraformVersion }}
-- bash: |
-    wget https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64
-    mv terragrunt_linux_amd64 terragrunt
-    chmod +x terragrunt
-    sudo mv terragrunt /usr/local/bin
-  displayName: Install Terragrunt
+  - task: TerraformInstaller@0
+    displayName: Install Terraform
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
 
-- task: AzureCLI@2
-  displayName: Authenticate Terraform
-  inputs:
-    scriptType: bash
-    scriptLocation: inlineScript
-    azureSubscription: 'v2devop-wif'
-    addSpnToEnvironment: true
-    inlineScript: |
-      echo "Authentication successful"
+  - bash: |
+      wget https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64
+      mv terragrunt_linux_amd64 terragrunt
+      chmod +x terragrunt
+      sudo mv terragrunt /usr/local/bin
+    displayName: Install Terragrunt
+
+  - task: AzureCLI@2
+    displayName: Authenticate Terraform
+    inputs:
+      scriptType: bash
+      scriptLocation: inlineScript
+      azureSubscription: 'v2devop-wif'
+      addSpnToEnvironment: true
+      inlineScript: |
+        echo "Authentication successful"
