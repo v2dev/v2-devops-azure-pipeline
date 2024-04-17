@@ -13,11 +13,6 @@ stages:
   - job: deploy_dev
     displayName: 'Deploy to Dev'
     steps:
-    - task: TerraformInstaller@0
-      displayName: Install Terraform
-      inputs:
-        terraformVersion: latest
-        
     - template: templates\terraform-setup.yaml
       parameters:
         terraformVersion: 'latest'
