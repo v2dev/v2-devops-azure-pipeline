@@ -8,7 +8,7 @@ steps:
 - task: AzureCLI@2
   displayName: Create resource group
   inputs:
-    v2devop-wif: 'callmind-wif-serviceconnection'
+    azureSubscription: 'v2devop-wif'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
@@ -17,7 +17,7 @@ steps:
 - task: AzureCLI@2
   displayName: Create storage account
   inputs:
-    v2devop-wif: 'callmind-wif-serviceconnection'
+    azureSubscription: 'v2devop-wif'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
@@ -26,7 +26,7 @@ steps:
 - task: AzureCLI@2
   displayName: Create storage container
   inputs:
-    v2devop-wif: 'callmind-wif-serviceconnection'
+    azureSubscription: 'v2devop-wif'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |

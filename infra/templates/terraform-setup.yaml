@@ -29,7 +29,7 @@ steps:
   inputs:
     scriptType: bash
     scriptLocation: inlineScript
-    v2devop-wif: 'dev-pipeline'
+    azureSubscription: 'v2devop-wif'
     addSpnToEnvironment: true
     inlineScript: |
       echo "Authentication successful"
