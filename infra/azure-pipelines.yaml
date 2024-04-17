@@ -7,7 +7,7 @@ pool:
   name: self-hosted-agent-pool
 
 stages:
-- stage: deploy-dev
+- stage: deploy_dev
   displayName: 'Deploy to Dev'
   jobs:
   - job: deploy_dev
@@ -28,7 +28,7 @@ stages:
       parameters:
         environment: 'dev'
 
-# - stage: deploy-qa
+# - stage: deploy_qa
 #   displayName: 'Deploy to QA'
 #   jobs:
 #   - job: deploy_qa
@@ -49,7 +49,7 @@ stages:
 #       parameters:
 #         environment: 'qa'
 
-# - stage: deploy-staging
+# - stage: deploy_staging
 #   displayName: 'Deploy to Staging'
 #   jobs:
 #   - job: deploy_staging
