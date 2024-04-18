@@ -1,5 +1,6 @@
 parameters:
   terraformVersion: ''
+  azureServiceConnection: ''
   
 steps:
   - task: TerraformInstaller@0
@@ -19,7 +20,7 @@ steps:
     inputs:
       scriptType: bash
       scriptLocation: inlineScript
-      azureSubscription: 'v2devop-wif'
+      azureSubscription: ${{ parameters.azureServiceConnection }}
       addSpnToEnvironment: true
       inlineScript: |
         echo "Authentication successful"

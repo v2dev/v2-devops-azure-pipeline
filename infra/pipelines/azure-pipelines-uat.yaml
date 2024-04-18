@@ -1,0 +1,15 @@
+trigger:
+  branches:
+    include:
+      - uat
+ 
+pool:
+  name: self-hosted-agent-pool
+
+stages:
+- template: templates\deploy_infra.yaml
+  parameters:
+    branchName: variables['Build.SourceBranchName']
+    environment: 'uat'
+    location: 'eastus'
+    azureServiceConnection: 'azuredevopssp'

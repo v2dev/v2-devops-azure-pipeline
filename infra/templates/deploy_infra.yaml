@@ -1,0 +1,40 @@
+parameters:
+- name: branchName
+  type: string
+  default: ''
+
+- name: environment
+  type: string
+  default: ''
+
+- name: location
+  type: string
+  default: ''
+
+- name: azureServiceConnection
+  type: string
+  default: ''
+
+stages:
+- stage: deploy_infra
+  displayName: 'Deploy Infrastructure'
+  condition: eq(variables['Build.SourceBranchName'], ${{ parameters.branchName }})
+  jobs:
+  - job: deploy_job
+    displayName: 'Deploy to ${{ parameters.environment }}'
+    steps:
+    - template: .\templates\terraform-setup.yaml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: .\templates\statefile-storage.yaml
+      parameters:
+        azureServiceConnection: ${{ parameters.azureServiceConnection }}
+        resourceGroupName: 'statefilerg${{ parameters.environment }}'
+        location: ${{ parameters.location }}
+        storageAccountName: 'statecs${{ parameters.environment }}'
+        containerName: ${{ parameters.environment }}
+
+    - template: .\templates\terragrunt-apply.yaml
+      parameters:
+        environment: ${{ parameters.environment }}

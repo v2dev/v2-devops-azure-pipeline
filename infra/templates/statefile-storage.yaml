@@ -3,12 +3,13 @@ parameters:
   location: ''
   storageAccountName: ''
   containerName: ''
+  azureServiceConnection: ''
 
 steps:
   - task: AzureCLI@2
     displayName: Create resource group
     inputs:
-      azureSubscription: 'v2devop-wif'
+      azureSubscription: ${{ parameters.azureServiceConnection }}
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
@@ -17,7 +18,7 @@ steps:
   - task: AzureCLI@2
     displayName: Create storage account
     inputs:
-      azureSubscription: 'v2devop-wif'
+      azureSubscription: ${{ parameters.azureServiceConnection }}
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
@@ -26,7 +27,7 @@ steps:
   - task: AzureCLI@2
     displayName: Create storage container
     inputs:
-      azureSubscription: 'v2devop-wif'
+      azureSubscription: ${{ parameters.azureServiceConnection }}
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
