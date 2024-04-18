@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - variables['Build.SourceBranch']
+      - "*"
       # - qa
       # - uat
       # - main
@@ -11,28 +11,40 @@ pool:
   name: self-hosted-agent-pool
 
 stages:
-- stage: deploy_infra
-  displayName: 'Deploy Infrastructure'
-  # condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-  jobs:
-  - job: deploy_dev
-    displayName: 'Deploy to Dev'
-    steps:
-    - template: templates\terraform-setup.yaml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: templates\statefile-storage.yaml
-      parameters:
-        azureServiceConnection: ''
-        resourceGroupName: 'callmindsfrg'
-        location: 'eastus'
-        storageAccountName: 'statecsdev'
-        containerName: variables['Build.SourceBranch']
+- template: deploy_infra.yaml
+  parameters:
+    branchName: 'dev'
 
-    - template: templates\terragrunt-apply.yaml
-      parameters:
-        environment: variables['Build.SourceBranch']
+- template: deploy_infra.yaml
+  parameters:
+    branchName: 'qa'
+
+- template: deploy_infra.yaml
+  parameters:
+    branchName: 'uat'
+# stages:
+# - stage: deploy_infra
+#   displayName: 'Deploy Infrastructure'
+#   # condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+#   jobs:
+#   - job: deploy_dev
+#     displayName: 'Deploy to Dev'
+#     steps:
+#     - template: templates\terraform-setup.yaml
+#       parameters:
+#         terraformVersion: 'latest'
+    
+#     - template: templates\statefile-storage.yaml
+#       parameters:
+#         azureServiceConnection: ''
+#         resourceGroupName: 'callmindsfrg'
+#         location: 'eastus'
+#         storageAccountName: 'statecsdev'
+#         containerName: variables['Build.SourceBranch']
+
+#     - template: templates\terragrunt-apply.yaml
+#       parameters:
+#         environment: variables['Build.SourceBranch']
 
 # - stage: deploy_qa
 #   displayName: 'Deploy to QA'

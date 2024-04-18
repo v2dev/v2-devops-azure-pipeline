@@ -1,0 +1,27 @@
+parameters:
+- name: branchName
+  default: ''
+
+stages:
+- stage: deploy_infra
+  displayName: 'Deploy Infrastructure'
+  condition: eq(variables['Build.SourceBranchName'], ${{ parameters.branchName }})
+  jobs:
+  - job: deploy_job
+    displayName: 'Deploy to ${{ parameters.branchName }}'
+    steps:
+    - template: templates\terraform-setup.yaml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: templates\statefile-storage.yaml
+      parameters:
+        azureServiceConnection: ''
+        resourceGroupName: 'callmindsfrg'
+        location: 'eastus'
+        storageAccountName: 'statecsdev'
+        containerName: ${{ parameters.branchName }}
+
+    - template: templates\terragrunt-apply.yaml
+      parameters:
+        environment: ${{ parameters.branchName }}
