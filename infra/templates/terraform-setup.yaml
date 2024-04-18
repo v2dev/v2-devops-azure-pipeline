@@ -2,10 +2,10 @@ parameters:
   terraformVersion: ''
   
 steps:
-  # - task: TerraformInstaller@0
-  #   displayName: Install Terraform
-  #   inputs:
-  #     terraformVersion: ${{ parameters.terraformVersion }}
+  - task: TerraformInstaller@0
+    displayName: Install Terraform
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
 
   - bash: |
       wget https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64
