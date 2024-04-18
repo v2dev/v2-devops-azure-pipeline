@@ -7,9 +7,9 @@ pool:
   name: self-hosted-agent-pool
 
 stages:
-- template: templates\deploy_infra.yaml
+- template: '..\templates\deploy-infra.yaml'
   parameters:
     branchName: variables['Build.SourceBranchName']
     environment: 'qa'
     location: 'eastus'
-    azureServiceConnection: 'azuredevopssp'
+    azureServiceConnection: 'v2-sc'

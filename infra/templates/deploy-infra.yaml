@@ -23,11 +23,11 @@ stages:
   - job: deploy_job
     displayName: 'Deploy to ${{ parameters.environment }}'
     steps:
-    - template: .\templates\terraform-setup.yaml
+    - template: .\terraform-setup.yaml
       parameters:
         terraformVersion: 'latest'
     
-    - template: .\templates\statefile-storage.yaml
+    - template: .\statefile-storage.yaml
       parameters:
         azureServiceConnection: ${{ parameters.azureServiceConnection }}
         resourceGroupName: 'statefilerg${{ parameters.environment }}'
@@ -35,6 +35,6 @@ stages:
         storageAccountName: 'statecs${{ parameters.environment }}'
         containerName: ${{ parameters.environment }}
 
-    - template: .\templates\terragrunt-apply.yaml
+    - template: .\terragrunt-apply.yaml
       parameters:
         environment: ${{ parameters.environment }}

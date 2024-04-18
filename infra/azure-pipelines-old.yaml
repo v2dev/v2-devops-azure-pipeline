@@ -11,15 +11,15 @@ pool:
   name: self-hosted-agent-pool
 
 stages:
-- template: templates\deploy_infra.yaml
+- template: .\templates\deploy-infra.yaml
   parameters:
     branchName: 'dev'
 
-- template: templates\deploy_infra.yaml
+- template: .\templates\deploy-infra.yaml
   parameters:
     branchName: 'qa'
 
-- template: templates\deploy_infra.yaml
+- template: .\templates\deploy-infra.yaml
   parameters:
     branchName: 'uat'
 # stages:
