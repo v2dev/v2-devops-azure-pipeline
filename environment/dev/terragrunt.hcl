@@ -18,13 +18,13 @@ remote_state {
   }
 }
 
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "azurerm" {
-  features {}
-  skip_provider_registration = true
-}
-EOF
-}
+// generate "provider" {
+//   path      = "provider.tf"
+//   if_exists = "overwrite_terragrunt"
+//   contents  = <<EOF
+// provider "azurerm" {
+//   features {}
+//   skip_provider_registration = true
+// }
+// EOF
+// }
