@@ -2,7 +2,7 @@ trigger:
   - sagar-*
  
 pool:
-  # vmImage: 'ubuntu-latest'
+  # vmImage: 'ubuntu-latest'$
   name: self-hosted-agent-pool
 
 stages:
