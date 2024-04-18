@@ -12,4 +12,4 @@ stages:
     branchName: variables['Build.SourceBranchName']
     environment: 'qa'
     location: 'eastus'
-    azureServiceConnection: 'azuredevopssp'
+    azureServiceConnection: 'v2-sc'
