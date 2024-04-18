@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - dev
+      - qa
+      - uat
+      - main
+ 
+pool:
+  # vmImage: 'ubuntu-latest'$
+  name: self-hosted-agent-pool
+
+stages:
+- stage: deploy_dev
+  displayName: 'Deploy to Dev'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+  jobs:
+  - job: deploy_dev
+    displayName: 'Deploy to Dev'
+    steps:
+    - template: templates\terraform-setup.yaml
+      parameters:
+        terraformVersion: 'latest'
+    
+    - template: templates\statefile-storage.yaml
+      parameters:
+        resourceGroupName: 'v2devops-new'
+        location: 'eastus'
+        storageAccountName: 'statecsdev'
+        containerName: 'dev'
+
+    - template: templates\terragrunt-apply.yaml
+      parameters:
+        environment: 'dev'

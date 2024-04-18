@@ -1,19 +1,19 @@
 trigger:
   branches:
     include:
-      # - dev
-      # - qa
-      # - uat
-      # - main
+      - dev
+      - qa
+      - uat
+      - main
  
 pool:
   # vmImage: 'ubuntu-latest'$
   name: self-hosted-agent-pool
 
 stages:
-- stage: deploy_infra
-  displayName: 'Deploy Infrastructure'
-  # condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+- stage: deploy_dev
+  displayName: 'Deploy to Dev'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
   jobs:
   - job: deploy_dev
     displayName: 'Deploy to Dev'
@@ -24,33 +24,32 @@ stages:
     
     - template: templates\statefile-storage.yaml
       parameters:
-        azureServiceConnection: ''
-        resourceGroupName: 'callmindsfrg'
+        resourceGroupName: 'v2devops-new'
         location: 'eastus'
         storageAccountName: 'statecsdev'
-        containerName: variables['Build.SourceBranch']
+        containerName: 'dev'
 
-    - template: templates\terragrunt-apply.yaml
+    # - template: templates\terragrunt-apply.yaml
+    #   parameters:
+    #     environment: 'dev'
+
+- stage: deploy_qa
+  displayName: 'Deploy to QA'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/qa')
+  jobs:
+  - job: deploy_qa
+    displayName: 'Deploy to QA'
+    steps:
+    - template: templates\terraform-setup.yaml
       parameters:
-        environment: variables['Build.SourceBranch']
-
-# - stage: deploy_qa
-#   displayName: 'Deploy to QA'
-#   condition: eq(variables['Build.SourceBranch'], 'refs/heads/qa')
-#   jobs:
-#   - job: deploy_qa
-#     displayName: 'Deploy to QA'
-#     steps:
-#     - template: templates\terraform-setup.yaml
-#       parameters:
-#         terraformVersion: 'latest'
+        terraformVersion: 'latest'
     
-#     - template: templates\statefile-storage.yaml
-#       parameters:
-#         resourceGroupName: 'rg-terragrunt-backend-state-qa'
-#         location: 'eastus'
-#         storageAccountName: 'callmindterraformstate-qa'
-#         containerName: 'qa'
+    - template: templates\statefile-storage.yaml
+      parameters:
+        resourceGroupName: 'rg-terragrunt-backend-state-qa'
+        location: 'eastus'
+        storageAccountName: 'callmindterraformstate-qa'
+        containerName: 'qa'
 
     # - template: templates\terragrunt-apply.yaml
     #   parameters:
