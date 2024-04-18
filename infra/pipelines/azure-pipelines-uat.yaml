@@ -1,77 +1,15 @@
 trigger:
   branches:
     include:
-      - dev
-      - qa
       - uat
-      - main
  
 pool:
-  # vmImage: 'ubuntu-latest'$
   name: self-hosted-agent-pool
 
 stages:
-- stage: deploy_dev
-  displayName: 'Deploy to Dev'
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-  jobs:
-  - job: deploy_dev
-    displayName: 'Deploy to Dev'
-    steps:
-    - template: templates\terraform-setup.yaml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: templates\statefile-storage.yaml
-      parameters:
-        resourceGroupName: 'v2devops-new'
-        location: 'eastus'
-        storageAccountName: 'statecsdev'
-        containerName: 'dev'
-
-    # - template: templates\terragrunt-apply.yaml
-    #   parameters:
-    #     environment: 'dev'
-
-- stage: deploy_qa
-  displayName: 'Deploy to QA'
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/qa')
-  jobs:
-  - job: deploy_qa
-    displayName: 'Deploy to QA'
-    steps:
-    - template: templates\terraform-setup.yaml
-      parameters:
-        terraformVersion: 'latest'
-    
-    - template: templates\statefile-storage.yaml
-      parameters:
-        resourceGroupName: 'rg-terragrunt-backend-state-qa'
-        location: 'eastus'
-        storageAccountName: 'callmindterraformstate-qa'
-        containerName: 'qa'
-
-    # - template: templates\terragrunt-apply.yaml
-    #   parameters:
-    #     environment: 'qa'
-
-# - stage: deploy_staging
-#   displayName: 'Deploy to Staging'
-#   jobs:
-#   - job: deploy_staging
-#     displayName: 'Deploy to Staging'
-#     steps:
-#     - template: templates\terraform-setup.yaml
-#       parameters:
-#         terraformVersion: 'latest'
-    
-#     - template: templates\statefile-storage.yaml
-#       parameters:
-#         resourceGroupName: 'rg-terragrunt-backend-state-staging'
-#         location: 'eastus'
-#         storageAccountName: 'callmindterraformstate-staging'
-#         containerName: 'staging'
-
-#     - template: templates\terragrunt-apply.yaml
-#       parameters:
-#         environment: 'staging'
+- template: templates\deploy_infra.yaml
+  parameters:
+    branchName: variables['Build.SourceBranchName']
+    environment: 'uat'
+    location: 'eastus'
+    azureServiceConnection: 'azuredevopssp'
