@@ -7,8 +7,8 @@ on:
   pull_request:
     branches:
       -main
-  release:
-    type: [published, created]
+  # release:
+  #   type: [published, created]
 
 jobs:
   multi-event:
