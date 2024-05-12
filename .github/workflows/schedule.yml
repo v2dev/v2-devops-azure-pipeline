@@ -1,14 +1,8 @@
 name: Schedule Tutorial
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      -main
-  # schedule:
-  #   - cron: '*/2 * * * *'
-  #
+  schedule:
+    - cron: '*/2 * * * *'
+  
 
 jobs:
   run-every-two-mins:
@@ -16,13 +10,3 @@ jobs:
     steps:
       - name: 'Runs every 2 mins'
         run: echo "The server time is $(date)"
-  
-  multi-event:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Multi Event Demo"
-        run: |
-          echo "REF: $GITHUB_REF"
-          echo "Job id: $GITHUB_JOB"
-          echo "Action: $GITHUB_ACTION"
-          echo "Actor: $GITHUB_ACTOR"
