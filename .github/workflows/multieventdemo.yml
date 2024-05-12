@@ -1,4 +1,4 @@
-name: Multi Event Demo
+name: Multi Event Workflow
 on:
   push:
     branches:
