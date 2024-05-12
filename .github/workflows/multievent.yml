@@ -1,5 +1,5 @@
 #This is a multi event workflow demo
-name: 'MultiEvent Demo'
+name: MultiEvent Demo
 on:
   push:
     branches:
